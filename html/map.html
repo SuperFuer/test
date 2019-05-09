@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>html</title>
+    <style>
+        html,body,#main{
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div id="main"></div>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+<script type="text/javascript">
+    //初始化
+    var myChart = echarts.init(document.getElementById('main'));
+    myChart.on('click', function (params) {
+        //flag为true代表去过该省份，false代表未去过，为true时不允许再修改
+        if(!params.data.flag){
+            var plan = prompt("请输入您的计划", "");
+            if (plan){
+                //判断省份名称，将输入的计划写入mydata里面，并改变flag的值
+                for(var i = 0;i < mydata.length; i ++){
+                    if(mydata[i].name == params.name){
+                        mydata[i].text = plan;
+                        mydata[i].flag = true;
+                        //更新mydata后刷新地图，否则改过的数据不生效
+                        myChart.setOption(option);
+                    }
+                }
+            }
+        }
+    });
+    //未接入后台，手动初始化地图信息
+    var mydata = [
+        {name: '北京', selected: false, value: 1, text: '以前去过1次', flag: true},
+        {name: '天津', selected: false, value: 1, text: '以前去过N次', flag: true},
+        {name: '上海', selected: false, value: 1, text: '未去过', flag: false},
+        {name: '重庆', selected: false, value: 4, text: '未去过', flag: false},
+        {name: '河北', selected: false, value: 5, text: '未去过', flag: false},
+        {name: '河南', selected: false, value: 6, text: '未去过', flag: false},
+        {name: '云南', selected: false, value: 7, text: '未去过', flag: false},
+        {name: '辽宁', selected: false, value: 8, text: '未去过', flag: false},
+        {name: '黑龙江', selected: false, value: 9, text: '以前去过100次', flag: true},
+        {name: '湖南', selected: false, value: 10, text: '未去过', flag: false},
+        {name: '安徽', selected: false, value: 11, text: '未去过', flag: false},
+        {name: '山东', selected: false, value: 12, text: '未去过', flag: false},
+        {name: '新疆', selected: false, value: 13, text: '未去过', flag: false},
+        {name: '江苏', selected: false, value: 14, text: '小时候去过', flag: true},
+        {name: '浙江', selected: false, value: 15, text: '未去过', flag: false},
+        {name: '江西', selected: false, value: 16, text: '未去过', flag: false},
+        {name: '湖北', selected: false, value: 17, text: '未去过', flag: false},
+        {name: '广西', selected: false, value: 18, text: '以前去过22', flag: true},
+        {name: '甘肃', selected: false, value: 19, text: '未去过', flag: false},
+        {name: '山西', selected: false, value: 20, text: '未去过', flag: false},
+        {name: '内蒙古', selected: false, value: 1, text: '未去过', flag: false},
+        {name: '陕西', selected: false, value: 22, text: '未去过', flag: false},
+        {name: '吉林', selected: false, value: 1, text: '以前去过的', flag: true},
+        {name: '福建', selected: false, value: 24, text: '未去过', flag: false},
+        {name: '贵州', selected: false, value: 25, text: '未去过', flag: false},
+        {name: '广东', selected: false, value: 26, text: '以前去过啊', flag: true},
+        {name: '青海', selected: false, value: 1, text: '未去过', flag: false},
+        {name: '西藏', selected: false, value: 1, text: '未去过', flag: false},
+        {name: '四川', selected: false, value: 1, text: '以前去过啦', flag: true},
+        {name: '宁夏', selected: false, value: 1, text: '未去过', flag: false},
+        {name: '海南', selected: false, value: 31, text: '以前去过了', flag: true},
+        {name: '台湾', selected: false, value: 32, text: '未去过', flag: false},
+        {name: '香港', selected: false, value: 1, text: '未去过', flag: false},
+        {name: '澳门', selected: false, value: 1, text: '未去过', flag: false}];
+    var option = {
+        backgroundColor: '#FFFFFF',
+        title: {
+            text: '旅行日志',
+            subtext: '',
+            x: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        formatter: function (params) {
+            return params.data.text;
+        },
+        //配置属性
+        series: [{
+            name: '旅行日志',
+            type: 'map',
+            mapType: 'china',
+            roam: true,  //滑动鼠标可以放大和缩小地图
+            itemStyle: {
+                normal: {
+                    label: {
+                        show: true,
+                        textStyle: {
+                            color: "rgb(249, 249, 249)"
+                        }
+                    }
+                },
+                emphasis: {label: {show: true}}
+            },
+            data: mydata
+        }]
+    };
+    //使用制定的配置项和数据显示图表
+    myChart.setOption(option);
+
+    function randomData() {
+        return Math.round(Math.random() * 2000);
+    }
+
+</script>
+</body>
+</html>
